@@ -135,6 +135,12 @@ function drawCart(){
 function openCart(){drawCart();$("sheet").classList.add("show")}
 function closeCart(){$("sheet").classList.remove("show")}
 const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+// Отправка всем админам (ID через запятую в config.js). Успех, если дошло хотя бы одному.
+async function notify(payload){
+  const ids=String(C.ADMIN_CHAT_ID).split(",").map(s=>s.trim()).filter(Boolean);
+  const res=await Promise.all(ids.map(id=>fetch(`https://api.telegram.org/bot${C.BOT_TOKEN}/sendMessage`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...payload,chat_id:id})}).then(r=>r.json()).catch(e=>({ok:false,description:e.message}))));
+  if(!res.some(r=>r.ok))throw new Error(res[0].description);
+}
 async function order(){
   const name=$("name").value.trim(),phone=$("phone").value.trim(),addr=$("addr").value.trim();
   if(!name||!phone||!addr)return toast("Заполните имя, телефон и адрес");
@@ -144,9 +150,7 @@ async function order(){
   const text=`🆕 <b>Новый заказ #${id}</b>\n\n${lines}\n\n💰 <b>Итого: ${money(total())}</b>\n\n👤 ${esc(name)}\n📞 ${esc(phone)}\n📍 ${esc(addr)}`+(note?`\n💬 ${esc(note)}`:"")+`\n\n⏳ Статус: ожидает`;
   const btn=$("send");btn.disabled=true;btn.textContent="Отправка...";
   try{
-    const r=await fetch(`https://api.telegram.org/bot${C.BOT_TOKEN}/sendMessage`,{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({chat_id:C.ADMIN_CHAT_ID,text,parse_mode:"HTML",reply_markup:{inline_keyboard:[[{text:"✅ Принять",callback_data:"ok:"+id,style:"success"},{text:"❌ Отклонить",callback_data:"no:"+id,style:"danger"}]]}})});
-    const j=await r.json();if(!j.ok)throw new Error(j.description);
+    await notify({text,parse_mode:"HTML",reply_markup:{inline_keyboard:[[{text:"✅ Принять",callback_data:"ok:"+id,style:"success"},{text:"❌ Отклонить",callback_data:"no:"+id,style:"danger"}]]}});
     cart={};save();closeCart();render();toast("✅ Заказ #"+id+" отправлен!");
   }catch(e){toast("Ошибка: "+e.message)}
   btn.disabled=false;btn.textContent="Оформить заказ";
@@ -171,10 +175,8 @@ async function sendRv(){
   if(!n||!t)return toast("Введите имя и текст отзыва");
   const m=M.find(x=>x.id==curItem),btn=$("rsend");btn.disabled=true;
   try{
-    const r=await fetch(`https://api.telegram.org/bot${C.BOT_TOKEN}/sendMessage`,{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({chat_id:C.ADMIN_CHAT_ID,parse_mode:"HTML",text:`⭐ <b>Новый отзыв</b>\nБлюдо #${m.id}: ${esc(m.name)}\nОценка: ${curStars}/5\nИмя: ${esc(n)}\nТекст: ${esc(t)}`,
-      reply_markup:{inline_keyboard:[[{text:"✅ Опубликовать",callback_data:"rv:ok",style:"success"},{text:"❌ Отклонить",callback_data:"rv:no",style:"danger"}]]}})});
-    const j=await r.json();if(!j.ok)throw new Error(j.description);
+    await notify({parse_mode:"HTML",text:`⭐ <b>Новый отзыв</b>\nБлюдо #${m.id}: ${esc(m.name)}\nОценка: ${curStars}/5\nИмя: ${esc(n)}\nТекст: ${esc(t)}`,
+      reply_markup:{inline_keyboard:[[{text:"✅ Опубликовать",callback_data:"rv:ok",style:"success"},{text:"❌ Отклонить",callback_data:"rv:no",style:"danger"}]]}});
     $("rtext").value="";closeRv();toast("Спасибо! Отзыв отправлен на проверку");
   }catch(e){toast("Ошибка: "+e.message)}
   btn.disabled=false;

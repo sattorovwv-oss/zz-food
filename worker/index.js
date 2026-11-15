@@ -7,6 +7,9 @@ const b64FromBytes = (bytes) => { let s = ""; for (let i = 0; i < bytes.length; 
 const strToB64 = (s) => b64FromBytes(enc.encode(s));
 const b64ToStr = (b) => dec.decode(Uint8Array.from(atob(b.replace(/\n/g, "")), (c) => c.charCodeAt(0)));
 
+// ADMIN_CHAT_ID может содержать несколько ID через запятую
+const isAdmin = (env, id) => String(env.ADMIN_CHAT_ID).split(",").map((s) => s.trim()).includes(String(id));
+
 /* ---------- Telegram ---------- */
 async function tg(env, method, body) {
   const r = await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/${method}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
@@ -147,7 +150,7 @@ async function onReply(env, m, t) {
 
 async function onMessage(env, m) {
   const chat = m.chat.id;
-  if (String(m.from.id) !== String(env.ADMIN_CHAT_ID)) return tg(env, "sendMessage", { chat_id: chat, text: "⛔ Нет доступа" });
+  if (!isAdmin(env, m.from.id)) return tg(env, "sendMessage", { chat_id: chat, text: "⛔ Нет доступа" });
   const text = (m.text || m.caption || "").trim();
 
   if (m.reply_to_message?.text) {
@@ -164,7 +167,7 @@ async function onMessage(env, m) {
 /* ---------- Кнопки (callback) ---------- */
 async function onCallback(env, q) {
   const answer = (text, alert = false) => tg(env, "answerCallbackQuery", { callback_query_id: q.id, text, show_alert: alert });
-  if (String(q.from.id) !== String(env.ADMIN_CHAT_ID)) return answer("Нет доступа", true);
+  if (!isAdmin(env, q.from.id)) return answer("Нет доступа", true);
   const [act, arg] = (q.data || "").split(":");
   const chat = q.message.chat.id, mid = q.message.message_id, orig = q.message.text || "";
   const editMsg = (text, markup) => tg(env, "editMessageText", { chat_id: chat, message_id: mid, text, ...(markup ? { reply_markup: markup } : {}) });
