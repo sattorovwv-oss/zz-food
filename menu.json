@@ -34,14 +34,6 @@
   ],
   "items": [
     {
-      "id": 1,
-      "cat": "burgers",
-      "name": "Бургер",
-      "desc": "Тест",
-      "price": 2,
-      "img": "images/1794730961844.jpg"
-    },
-    {
       "id": 2,
       "cat": "burgers",
       "name": "Бургер",
