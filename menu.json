@@ -248,6 +248,14 @@
       "desc": "Болаззат 😋",
       "price": 16,
       "img": "images/1794753288032.jpg"
+    },
+    {
+      "id": 28,
+      "cat": "sides",
+      "name": "Zz Дог",
+      "desc": "Болаззат 😋",
+      "price": 10,
+      "img": "images/1794753498953.jpg"
     }
   ]
 }
