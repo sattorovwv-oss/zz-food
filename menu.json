@@ -34,14 +34,6 @@
   ],
   "items": [
     {
-      "id": 6,
-      "cat": "tenders",
-      "name": "Острые крылышки 5 шт",
-      "desc": "Острая глазурь",
-      "price": 85,
-      "img": "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=500&q=70"
-    },
-    {
       "id": 8,
       "cat": "sides",
       "name": "Коул слоу",
