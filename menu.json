@@ -34,15 +34,6 @@
   ],
   "items": [
     {
-      "id": 3,
-      "cat": "tenders",
-      "name": "Тендеры 3 шт",
-      "desc": "Фри + соус + напиток",
-      "price": 139,
-      "badge": "-15%",
-      "img": "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=500&q=70"
-    },
-    {
       "id": 4,
       "cat": "buckets",
       "name": "Семейный баскет 12 шт",
