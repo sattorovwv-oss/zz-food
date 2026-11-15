@@ -19,9 +19,7 @@ small{color:#8a7468}
 <body>
 <h2>ZZ - Food · Админка</h2>
 
-<div class="s"><h3>🔔 Заказы и отзывы</h3>
-<p style="font-size:14px">Держите эту страницу открытой, тогда кнопки «Принять / Отклонить» и «Опубликовать» в Telegram работают.</p>
-<div id="st">Подключение...</div><div id="log" style="font-size:13px;margin-top:6px"></div></div>
+<div class="s"><h3>🔔 Заказы и отзывы</h3><p style="font-size:14px">Бот работает на сервере 24/7: кнопки «Принять / Отклонить» и «Опубликовать» работают, даже когда эта страница закрыта. Блюда можно добавлять и в самом боте (команда /help).</p></div>
 
 <div class="s" id="auth"><h3>🔑 Доступ к меню</h3>
 <small>Вставьте GitHub токен (Fine-grained, доступ Contents: Read and write к репозиторию zz-food). Сохраняется только в этом браузере.</small>
@@ -116,41 +114,5 @@ async function publish(){
   }catch(e){$("pubst").innerHTML="<span class='err'>Ошибка: "+e.message+"</span>";$("pub").disabled=false}
 }
 
-/* ---- Telegram: заказы и отзывы ---- */
-let off=0;
-async function publishReview(text){
-  const m=text.match(/Блюдо #(\d+)[^\n]*\nОценка: (\d)\/5\nИмя: ([^\n]*)\nТекст: ([\s\S]*?)(\n\n(✅|❌)[\s\S]*)?$/);
-  if(!m)throw new Error("не разобрал отзыв");
-  const r=await getJson("reviews.json",[]);
-  r.data.push({item:+m[1],stars:+m[2],name:m[3],text:m[4].trim(),date:new Date().toISOString().slice(0,10)});
-  await putJson("reviews.json",r.data,r.sha,"Add review");
-}
-async function loop(){
-  await tg("deleteWebhook",{});
-  $("st").innerHTML="<span class='ok'>● Онлайн, слушаю заказы</span>";
-  while(true){
-    try{
-      const r=await tg("getUpdates",{offset:off,timeout:25,allowed_updates:["callback_query"]});
-      if(!r.ok){$("st").textContent="Ошибка: "+r.description;await wait(5000);continue}
-      for(const u of r.result){off=u.update_id+1;const q=u.callback_query;if(!q||!q.data)continue;
-        const parts=q.data.split(":"),chat=q.message.chat.id,mid=q.message.message_id,orig=q.message.text||"";
-        let status,toast;
-        if(parts[0]==="rv"){
-          if(parts[1]==="ok"){
-            if(!tok()){await tg("answerCallbackQuery",{callback_query_id:q.id,text:"Сначала войдите в админке (GitHub токен)",show_alert:true});continue}
-            try{await publishReview(orig);status="✅ ОПУБЛИКОВАН";toast="Отзыв опубликован";log("Отзыв опубликован")}
-            catch(e){await tg("answerCallbackQuery",{callback_query_id:q.id,text:"Ошибка: "+e.message,show_alert:true});continue}
-          }else{status="❌ ОТКЛОНЁН";toast="Отзыв отклонён"}
-        }else{
-          const acc=parts[0]==="ok";status=acc?"✅ Статус: ПРИНЯТ":"❌ Статус: ОТКЛОНЁН";toast=acc?"Заказ принят":"Заказ отклонён";
-          log("#"+parts[1]+" — "+(acc?"принят":"отклонён"));
-        }
-        const base=orig.replace(/\n*(⏳|✅|❌) Статус[\s\S]*$/,"");
-        await tg("editMessageText",{chat_id:chat,message_id:mid,text:base+"\n\n"+status});
-        await tg("answerCallbackQuery",{callback_query_id:q.id,text:toast});
-      }
-    }catch(e){await wait(3000)}
-  }
-}
-initMgr();loop();
+initMgr();
 </script></body></html>

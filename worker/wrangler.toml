@@ -1,0 +1,7 @@
+name = "zz-food-bot"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+ADMIN_CHAT_ID = "7645089177"
+GH_REPO = "sattorovwv-oss/zz-food"
