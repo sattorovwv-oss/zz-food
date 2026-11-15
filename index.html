@@ -180,11 +180,18 @@ async function sendRv(){
   btn.disabled=false;
 }
 fetch("reviews.json?t="+Date.now()).then(r=>r.ok?r.json():[]).catch(()=>[]).then(x=>{RV=x;if(M.length)render()});
-fetch("menu.json?t="+Date.now()).then(r=>r.json()).then(d=>{
-  M=d.items;CATEGORIES=d.categories;HERO=d.hero||"";
-  Object.keys(cart).forEach(k=>{if(!M.find(m=>m.id==k))delete cart[k]});
-  render();
-}).catch(()=>{$("grid").innerHTML="<p>Не удалось загрузить меню</p>"});
+$("grid").innerHTML="<p style='grid-column:1/-1;text-align:center;color:#8a7468;padding:20px'>Загрузка меню...</p>";
+function loadMenu(n){
+  fetch("menu.json?t="+Date.now(),{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).then(d=>{
+    M=d.items;CATEGORIES=d.categories;HERO=d.hero||"";
+    Object.keys(cart).forEach(k=>{if(!M.find(m=>m.id==k))delete cart[k]});
+    render();
+  }).catch(e=>{
+    if(n<3)return setTimeout(()=>loadMenu(n+1),1500);
+    $("grid").innerHTML="<div style='grid-column:1/-1;text-align:center;padding:20px'><p>Не удалось загрузить меню ("+e.message+")</p><button class='main' onclick='location.reload()'>Обновить</button></div>";
+  });
+}
+loadMenu(0);
 </script>
 </body>
 </html>
