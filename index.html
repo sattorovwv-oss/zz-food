@@ -145,7 +145,7 @@ async function order(){
   const btn=$("send");btn.disabled=true;btn.textContent="Отправка...";
   try{
     const r=await fetch(`https://api.telegram.org/bot${C.BOT_TOKEN}/sendMessage`,{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({chat_id:C.ADMIN_CHAT_ID,text,parse_mode:"HTML",reply_markup:{inline_keyboard:[[{text:"✅ Принять",callback_data:"ok:"+id},{text:"❌ Отклонить",callback_data:"no:"+id}]]}})});
+      body:JSON.stringify({chat_id:C.ADMIN_CHAT_ID,text,parse_mode:"HTML",reply_markup:{inline_keyboard:[[{text:"✅ Принять",callback_data:"ok:"+id,style:"success"},{text:"❌ Отклонить",callback_data:"no:"+id,style:"danger"}]]}})});
     const j=await r.json();if(!j.ok)throw new Error(j.description);
     cart={};save();closeCart();render();toast("✅ Заказ #"+id+" отправлен!");
   }catch(e){toast("Ошибка: "+e.message)}
@@ -173,7 +173,7 @@ async function sendRv(){
   try{
     const r=await fetch(`https://api.telegram.org/bot${C.BOT_TOKEN}/sendMessage`,{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({chat_id:C.ADMIN_CHAT_ID,parse_mode:"HTML",text:`⭐ <b>Новый отзыв</b>\nБлюдо #${m.id}: ${esc(m.name)}\nОценка: ${curStars}/5\nИмя: ${esc(n)}\nТекст: ${esc(t)}`,
-      reply_markup:{inline_keyboard:[[{text:"✅ Опубликовать",callback_data:"rv:ok"},{text:"❌ Отклонить",callback_data:"rv:no"}]]}})});
+      reply_markup:{inline_keyboard:[[{text:"✅ Опубликовать",callback_data:"rv:ok",style:"success"},{text:"❌ Отклонить",callback_data:"rv:no",style:"danger"}]]}})});
     const j=await r.json();if(!j.ok)throw new Error(j.description);
     $("rtext").value="";closeRv();toast("Спасибо! Отзыв отправлен на проверку");
   }catch(e){toast("Ошибка: "+e.message)}
