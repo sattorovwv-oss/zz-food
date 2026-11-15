@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ZZ Food</title>
+<title>ZZ - Food</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23d62914'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='900' font-size='28' fill='white' text-anchor='middle'%3EZZ%3C/text%3E%3C/svg%3E">
 <style>
 :root{--red:#d62914;--bg:#fff3ea;--card:#fff;--text:#2a1a14;--mut:#8a7468}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
@@ -13,11 +14,14 @@ header{display:flex;align-items:center;gap:12px;justify-content:space-between}
 header small{font-size:13px}header h1{font-size:20px;line-height:1.2}
 .cartbtn{position:relative;background:#fff;border:0;width:46px;height:46px;border-radius:14px;font-size:22px;box-shadow:0 2px 8px #0001}
 .cartbtn b{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:11px;border-radius:10px;min-width:18px;padding:2px 4px}
-.search{margin:16px 0;width:100%;padding:14px 16px;border:0;border-radius:16px;font-size:15px;box-shadow:0 2px 8px #0001}
+.sw{position:relative;margin:16px 0}.sw svg{position:absolute;left:14px;top:50%;transform:translateY(-50%)}
+.search{margin:0;width:100%;padding:14px 16px 14px 44px;border:0;border-radius:16px;font-size:15px;box-shadow:0 2px 8px #0001}
 .hero{background:linear-gradient(135deg,#b81d0b,#f0541c);color:#fff;border-radius:22px;padding:22px;position:relative;overflow:hidden;min-height:190px}
 .hero span{background:#0003;font-size:10px;padding:4px 8px;border-radius:6px;letter-spacing:.5px}
 .hero h2{font-size:28px;margin:12px 0 6px;max-width:60%}.hero p{font-size:12px;max-width:55%;opacity:.9}
-.hero i{position:absolute;right:6px;bottom:-6px;font-size:110px;font-style:normal}
+.hero img{position:absolute;right:-30px;bottom:-30px;width:190px;height:190px;object-fit:cover;border-radius:50%;border:5px solid #fff3;box-shadow:0 8px 24px #0005}
+.cat div{overflow:hidden}.cat div img{width:100%;height:100%;object-fit:cover}
+.nav svg{display:block;margin:0 auto 2px}
 .hero button{margin-top:14px;background:#fff;color:var(--red);border:0;padding:10px 18px;border-radius:20px;font-weight:700}
 .cats{display:flex;gap:14px;overflow-x:auto;padding:18px 0 6px;scrollbar-width:none}
 .cat{flex:0 0 auto;text-align:center;font-size:12px;cursor:pointer}
@@ -46,23 +50,31 @@ nav a{font-size:11px;text-align:center;color:var(--mut);text-decoration:none}nav
 input,textarea{width:100%;padding:12px;margin-top:8px;border:1px solid #ddd;border-radius:12px;font:inherit}
 .main{width:100%;margin-top:14px;padding:14px;border:0;border-radius:14px;background:var(--red);color:#fff;font-size:16px;font-weight:700}
 .total{display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin-top:12px}
+.rt{font-size:12px;margin:4px 0;color:#c77a00;cursor:pointer;text-decoration:underline}
+.stars{display:flex;gap:6px;margin:10px 0}.stars button{background:none;border:0;font-size:32px;color:#ccc;padding:0;cursor:pointer}.stars button.on{color:#f5a300}
+.rv{padding:10px 0;border-bottom:1px solid #eee;font-size:14px}.rv small{color:#8a7468}
 .toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:20px;z-index:20;display:none}
 </style>
 </head>
 <body>
 <div class="app">
   <header>
-    <div><small>Hi, Chicken Lover! 👋</small><h1>Crispy. Juicy.<br>Always Delicious.</h1></div>
-    <button class="cartbtn" onclick="openCart()">🛍<b id="cnt">0</b></button>
+    <div><small style="color:#d62914;font-weight:800;letter-spacing:.5px">ZZ - Food</small><h1>Crispy. Juicy.<br>Always Delicious.</h1></div>
+    <button class="cartbtn" onclick="openCart()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2a1a14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><b id="cnt">0</b></button>
   </header>
-  <input class="search" id="q" placeholder="🔍 Search for your favorite chicken..." oninput="render()">
-  <div class="hero"><span>HOT &amp; CRISPY</span><h2>Crave the Crispy Perfection!</h2><p>Hand-breaded. Freshly cooked. Every time.</p><button onclick="pick('buckets')">Order Now →</button><i>🍗</i></div>
+  <div class="sw"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8a7468" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input class="search" id="q" placeholder="Search for your favorite chicken..." oninput="render()"></div>
+  <div class="hero"><span>HOT &amp; CRISPY</span><h2>Crave the Crispy Perfection!</h2><p>Hand-breaded. Freshly cooked. Every time.</p><button onclick="pick('buckets')">Order Now →</button><img id="heroimg" alt=""></div>
   <div class="cats" id="cats"></div>
   <div class="row"><h3 id="title">Popular Combos</h3></div>
   <div class="grid" id="grid"></div>
-  <div class="deal"><div><small>Spicy Deals 🔥</small><h4>Up to 30% OFF</h4><small>On selected combos</small></div><em>🍔</em></div>
+  <div class="deal"><div><small>Spicy Deals 🔥</small><h4>Up to 30% OFF</h4><small>On selected combos</small></div><em><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=300&q=70" alt="" style="width:90px;height:90px;border-radius:50%;object-fit:cover"></em></div>
 </div>
-<nav><a href="#"><span>🏠</span>Home</a><a href="#" onclick="pick('all')"><span>🍽</span>Menu</a><a href="#" onclick="openCart()"><span>🧾</span>Orders</a><a href="#"><span>🏷</span>Offers</a></nav>
+<nav class="nav">
+<a href="#"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</a>
+<a href="#" onclick="pick('all')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Menu</a>
+<a href="#" onclick="openCart()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>Orders</a>
+<a href="#" onclick="pick('buckets')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 12l9-9h8v8l-9 9z"/><circle cx="15.5" cy="8.5" r="1.3"/></svg>Offers</a>
+</nav>
 
 <div class="sheet" id="sheet" onclick="if(event.target===this)closeCart()">
   <div class="panel">
@@ -78,26 +90,38 @@ input,textarea{width:100%;padding:12px;margin-top:8px;border:1px solid #ddd;bord
     </div>
   </div>
 </div>
+<div class="sheet" id="rsheet" onclick="if(event.target===this)closeRv()">
+  <div class="panel">
+    <div class="row"><h3 style="margin:0" id="rtitle">Отзывы</h3><button onclick="closeRv()" style="border:0;background:none;font-size:22px">✕</button></div>
+    <div id="rlist"></div>
+    <h3 style="margin-top:16px">Ваш отзыв</h3>
+    <div class="stars" id="stars"></div>
+    <input id="rname" placeholder="Ваше имя">
+    <textarea id="rtext" rows="3" placeholder="Что скажете о блюде?"></textarea>
+    <button class="main" id="rsend" onclick="sendRv()">Отправить отзыв</button>
+    <p style="font-size:12px;color:#8a7468;margin-top:8px">Отзыв появится на сайте после проверки.</p>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script src="config.js"></script>
-<script src="menu.js"></script>
 <script>
-const C=window.CONFIG,M=window.MENU;
+const C=window.CONFIG;let M=[],CATEGORIES=[],HERO="";
 let cat="all",cart={};
 try{cart=JSON.parse(localStorage.getItem("cart")||"{}")}catch(e){}
-const $=id=>document.getElementById(id), money=n=>C.CURRENCY+n.toFixed(2);
+const $=id=>document.getElementById(id), money=n=>(Number.isInteger(n)?n:n.toFixed(2))+" "+C.CURRENCY;
 const save=()=>{try{localStorage.setItem("cart",JSON.stringify(cart))}catch(e){}};
 function toast(t){const e=$("toast");e.textContent=t;e.style.display="block";setTimeout(()=>e.style.display="none",2500)}
 function pick(c){cat=c;render();$("grid").scrollIntoView({behavior:"smooth"})}
 function render(){
-  $("cats").innerHTML=CATEGORIES.map(c=>`<div class="cat ${c.id===cat?"on":""}" onclick="pick('${c.id}')"><div>${c.icon}</div>${c.name}</div>`).join("");
+  $("cats").innerHTML=CATEGORIES.map(c=>`<div class="cat ${c.id===cat?"on":""}" onclick="pick('${c.id}')"><div><img src="${c.img}" alt=""></div>${c.name}</div>`).join("");
+  if(HERO)$("heroimg").src=HERO;
   const q=$("q").value.trim().toLowerCase();
   const list=M.filter(m=>(cat==="all"||m.cat===cat)&&(!q||m.name.toLowerCase().includes(q)));
   $("title").textContent=cat==="all"&&!q?"Popular Combos":CATEGORIES.find(c=>c.id===cat).name;
   $("grid").innerHTML=list.map(m=>`<div class="card">${m.badge?`<span class="badge">${m.badge}</span>`:""}
-   <div class="pic">${m.img?`<img src="${m.img}">`:m.emoji}</div><h4>${m.name}</h4><p>${m.desc}</p>
-   <div class="r">⭐ ${m.rating} (${m.reviews})</div><div class="row"><b>${money(m.price)}</b><button class="add" onclick="add(${m.id})">+</button></div></div>`).join("")||"<p>Ничего не найдено</p>";
+   <div class="pic"><img src="${m.img}" alt="${m.name}" loading="lazy"></div><h4>${m.name}</h4><p>${m.desc||""}</p>${rate(m.id)}
+   <div class="row"><b>${money(m.price)}</b><button class="add" onclick="add(${m.id})">+</button></div></div>`).join("")||"<p>Ничего не найдено</p>";
   $("cnt").textContent=Object.values(cart).reduce((a,b)=>a+b,0);
 }
 function add(id){cart[id]=(cart[id]||0)+1;save();render();toast("Добавлено в корзину")}
@@ -127,7 +151,40 @@ async function order(){
   }catch(e){toast("Ошибка: "+e.message)}
   btn.disabled=false;btn.textContent="Оформить заказ";
 }
-render();
+let RV=[],curItem=0,curStars=5;
+function rate(id){
+  const l=RV.filter(r=>r.item==id);
+  if(!l.length)return `<div class="rt" onclick="openRv(${id})">☆ Оставить отзыв</div>`;
+  const a=(l.reduce((s,r)=>s+r.stars,0)/l.length).toFixed(1);
+  return `<div class="rt" onclick="openRv(${id})">★ ${a} (${l.length}) · отзывы</div>`;
+}
+function drawStars(){$("stars").innerHTML=[1,2,3,4,5].map(i=>`<button class="${i<=curStars?"on":""}" onclick="curStars=${i};drawStars()">★</button>`).join("")}
+function openRv(id){
+  curItem=id;curStars=5;const m=M.find(x=>x.id==id);$("rtitle").textContent="Отзывы: "+m.name;
+  const l=RV.filter(r=>r.item==id).slice(-10).reverse();
+  $("rlist").innerHTML=l.length?l.map(r=>`<div class="rv"><b>${esc(r.name)}</b> <span style="color:#f5a300">${"★".repeat(r.stars)}</span> <small>${r.date||""}</small><br>${esc(r.text)}</div>`).join(""):"<p style='color:#888;padding:10px 0'>Пока нет отзывов. Будьте первым!</p>";
+  drawStars();$("rsheet").classList.add("show");
+}
+function closeRv(){$("rsheet").classList.remove("show")}
+async function sendRv(){
+  const n=$("rname").value.trim(),t=$("rtext").value.trim();
+  if(!n||!t)return toast("Введите имя и текст отзыва");
+  const m=M.find(x=>x.id==curItem),btn=$("rsend");btn.disabled=true;
+  try{
+    const r=await fetch(`https://api.telegram.org/bot${C.BOT_TOKEN}/sendMessage`,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({chat_id:C.ADMIN_CHAT_ID,parse_mode:"HTML",text:`⭐ <b>Новый отзыв</b>\nБлюдо #${m.id}: ${esc(m.name)}\nОценка: ${curStars}/5\nИмя: ${esc(n)}\nТекст: ${esc(t)}`,
+      reply_markup:{inline_keyboard:[[{text:"✅ Опубликовать",callback_data:"rv:ok"},{text:"❌ Отклонить",callback_data:"rv:no"}]]}})});
+    const j=await r.json();if(!j.ok)throw new Error(j.description);
+    $("rtext").value="";closeRv();toast("Спасибо! Отзыв отправлен на проверку");
+  }catch(e){toast("Ошибка: "+e.message)}
+  btn.disabled=false;
+}
+fetch("reviews.json?t="+Date.now()).then(r=>r.ok?r.json():[]).catch(()=>[]).then(x=>{RV=x;if(M.length)render()});
+fetch("menu.json?t="+Date.now()).then(r=>r.json()).then(d=>{
+  M=d.items;CATEGORIES=d.categories;HERO=d.hero||"";
+  Object.keys(cart).forEach(k=>{if(!M.find(m=>m.id==k))delete cart[k]});
+  render();
+}).catch(()=>{$("grid").innerHTML="<p>Не удалось загрузить меню</p>"});
 </script>
 </body>
 </html>
