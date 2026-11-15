@@ -34,15 +34,6 @@
   ],
   "items": [
     {
-      "id": 1,
-      "cat": "buckets",
-      "name": "Баскет 8 кусков",
-      "desc": "2 соуса + 2 фри + 2 напитка",
-      "price": 249,
-      "badge": "BESTSELLER",
-      "img": "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=500&q=70"
-    },
-    {
       "id": 2,
       "cat": "burgers",
       "name": "Зингер бургер",
