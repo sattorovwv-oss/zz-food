@@ -48,6 +48,14 @@
       "desc": "Прапустит",
       "price": 39,
       "img": "images/1794734408156.jpg"
+    },
+    {
+      "id": 3,
+      "cat": "burgers",
+      "name": "ZZ бургер",
+      "desc": "Прапустит",
+      "price": 40,
+      "img": "images/1794734977932.jpg"
     }
   ]
 }
