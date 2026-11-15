@@ -34,14 +34,6 @@
   ],
   "items": [
     {
-      "id": 8,
-      "cat": "sides",
-      "name": "Коул слоу",
-      "desc": "Свежий салат",
-      "price": 30,
-      "img": "https://images.unsplash.com/photo-1625938145744-e380515399bf?auto=format&fit=crop&w=500&q=70"
-    },
-    {
       "id": 9,
       "cat": "drinks",
       "name": "Кола 0.5Л",
