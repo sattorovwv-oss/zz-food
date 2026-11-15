@@ -32,5 +32,14 @@
       "img": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=500&q=70"
     }
   ],
-  "items": []
+  "items": [
+    {
+      "id": 1,
+      "cat": "burgers",
+      "name": "Бургер",
+      "desc": "Тест",
+      "price": 2,
+      "img": "images/1794730277531.jpg"
+    }
+  ]
 }
