@@ -34,14 +34,6 @@
   ],
   "items": [
     {
-      "id": 2,
-      "cat": "burgers",
-      "name": "Бургер",
-      "desc": "Прапустит",
-      "price": 32,
-      "img": "images/1794731031309.jpg"
-    },
-    {
       "id": 3,
       "cat": "drinks",
       "name": "Колкакола",
