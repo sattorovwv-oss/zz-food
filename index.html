@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ZZ Food</title>
+<style>
+:root{--red:#d62914;--bg:#fff3ea;--card:#fff;--text:#2a1a14;--mut:#8a7468}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);padding-bottom:90px}
+.app{max-width:480px;margin:0 auto;padding:16px}
+header{display:flex;align-items:center;gap:12px;justify-content:space-between}
+header small{font-size:13px}header h1{font-size:20px;line-height:1.2}
+.cartbtn{position:relative;background:#fff;border:0;width:46px;height:46px;border-radius:14px;font-size:22px;box-shadow:0 2px 8px #0001}
+.cartbtn b{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:11px;border-radius:10px;min-width:18px;padding:2px 4px}
+.search{margin:16px 0;width:100%;padding:14px 16px;border:0;border-radius:16px;font-size:15px;box-shadow:0 2px 8px #0001}
+.hero{background:linear-gradient(135deg,#b81d0b,#f0541c);color:#fff;border-radius:22px;padding:22px;position:relative;overflow:hidden;min-height:190px}
+.hero span{background:#0003;font-size:10px;padding:4px 8px;border-radius:6px;letter-spacing:.5px}
+.hero h2{font-size:28px;margin:12px 0 6px;max-width:60%}.hero p{font-size:12px;max-width:55%;opacity:.9}
+.hero i{position:absolute;right:6px;bottom:-6px;font-size:110px;font-style:normal}
+.hero button{margin-top:14px;background:#fff;color:var(--red);border:0;padding:10px 18px;border-radius:20px;font-weight:700}
+.cats{display:flex;gap:14px;overflow-x:auto;padding:18px 0 6px;scrollbar-width:none}
+.cat{flex:0 0 auto;text-align:center;font-size:12px;cursor:pointer}
+.cat div{width:62px;height:62px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:30px;margin-bottom:6px;box-shadow:0 2px 8px #0001;border:2px solid transparent}
+.cat.on div{border-color:var(--red);background:#ffe3d3}
+h3{margin:14px 0 10px;font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{background:var(--card);border-radius:18px;padding:10px;box-shadow:0 2px 10px #0001;position:relative}
+.card .pic{height:90px;border-radius:12px;background:linear-gradient(135deg,#ffe3d3,#ffc9a8);display:grid;place-items:center;font-size:52px;overflow:hidden}
+.card .pic img{width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;top:14px;left:14px;background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:3px 7px;border-radius:6px}
+.card h4{font-size:13px;margin:8px 0 2px}.card p{font-size:11px;color:var(--mut)}
+.card .r{font-size:11px;margin:4px 0;color:var(--mut)}
+.row{display:flex;justify-content:space-between;align-items:center}
+.row b{font-size:16px}
+.add{width:30px;height:30px;border-radius:50%;border:0;background:var(--red);color:#fff;font-size:20px;line-height:1}
+.deal{margin-top:16px;background:linear-gradient(135deg,#ffe7d0,#ffb98a);border-radius:20px;padding:18px;display:flex;justify-content:space-between;align-items:center}
+.deal h4{font-size:20px}.deal em{font-size:60px;font-style:normal}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:10px 0 14px;box-shadow:0 -2px 12px #0001}
+nav a{font-size:11px;text-align:center;color:var(--mut);text-decoration:none}nav a span{display:block;font-size:22px}
+.sheet{position:fixed;inset:0;background:#0007;display:none;align-items:flex-end;z-index:10}
+.sheet.show{display:flex}
+.panel{background:#fff;width:100%;max-width:480px;margin:0 auto;border-radius:24px 24px 0 0;padding:20px;max-height:90vh;overflow:auto}
+.item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee;font-size:14px;gap:8px}
+.qty{display:flex;align-items:center;gap:8px}.qty button{width:26px;height:26px;border-radius:50%;border:1px solid #ddd;background:#fff;font-size:16px}
+input,textarea{width:100%;padding:12px;margin-top:8px;border:1px solid #ddd;border-radius:12px;font:inherit}
+.main{width:100%;margin-top:14px;padding:14px;border:0;border-radius:14px;background:var(--red);color:#fff;font-size:16px;font-weight:700}
+.total{display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin-top:12px}
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:20px;z-index:20;display:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div><small>Hi, Chicken Lover! 👋</small><h1>Crispy. Juicy.<br>Always Delicious.</h1></div>
+    <button class="cartbtn" onclick="openCart()">🛍<b id="cnt">0</b></button>
+  </header>
+  <input class="search" id="q" placeholder="🔍 Search for your favorite chicken..." oninput="render()">
+  <div class="hero"><span>HOT &amp; CRISPY</span><h2>Crave the Crispy Perfection!</h2><p>Hand-breaded. Freshly cooked. Every time.</p><button onclick="pick('buckets')">Order Now →</button><i>🍗</i></div>
+  <div class="cats" id="cats"></div>
+  <div class="row"><h3 id="title">Popular Combos</h3></div>
+  <div class="grid" id="grid"></div>
+  <div class="deal"><div><small>Spicy Deals 🔥</small><h4>Up to 30% OFF</h4><small>On selected combos</small></div><em>🍔</em></div>
+</div>
+<nav><a href="#"><span>🏠</span>Home</a><a href="#" onclick="pick('all')"><span>🍽</span>Menu</a><a href="#" onclick="openCart()"><span>🧾</span>Orders</a><a href="#"><span>🏷</span>Offers</a></nav>
+
+<div class="sheet" id="sheet" onclick="if(event.target===this)closeCart()">
+  <div class="panel">
+    <div class="row"><h3 style="margin:0">Корзина</h3><button onclick="closeCart()" style="border:0;background:none;font-size:22px">✕</button></div>
+    <div id="items"></div>
+    <div class="total"><span>Итого</span><span id="sum"></span></div>
+    <div id="form">
+      <input id="name" placeholder="Ваше имя">
+      <input id="phone" type="tel" placeholder="Телефон">
+      <input id="addr" placeholder="Адрес доставки (или «Самовывоз»)">
+      <textarea id="note" rows="2" placeholder="Комментарий к заказу"></textarea>
+      <button class="main" id="send" onclick="order()">Оформить заказ</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script src="menu.js"></script>
+<script>
+const C=window.CONFIG,M=window.MENU;
+let cat="all",cart={};
+try{cart=JSON.parse(localStorage.getItem("cart")||"{}")}catch(e){}
+const $=id=>document.getElementById(id), money=n=>C.CURRENCY+n.toFixed(2);
+const save=()=>{try{localStorage.setItem("cart",JSON.stringify(cart))}catch(e){}};
+function toast(t){const e=$("toast");e.textContent=t;e.style.display="block";setTimeout(()=>e.style.display="none",2500)}
+function pick(c){cat=c;render();$("grid").scrollIntoView({behavior:"smooth"})}
+function render(){
+  $("cats").innerHTML=CATEGORIES.map(c=>`<div class="cat ${c.id===cat?"on":""}" onclick="pick('${c.id}')"><div>${c.icon}</div>${c.name}</div>`).join("");
+  const q=$("q").value.trim().toLowerCase();
+  const list=M.filter(m=>(cat==="all"||m.cat===cat)&&(!q||m.name.toLowerCase().includes(q)));
+  $("title").textContent=cat==="all"&&!q?"Popular Combos":CATEGORIES.find(c=>c.id===cat).name;
+  $("grid").innerHTML=list.map(m=>`<div class="card">${m.badge?`<span class="badge">${m.badge}</span>`:""}
+   <div class="pic">${m.img?`<img src="${m.img}">`:m.emoji}</div><h4>${m.name}</h4><p>${m.desc}</p>
+   <div class="r">⭐ ${m.rating} (${m.reviews})</div><div class="row"><b>${money(m.price)}</b><button class="add" onclick="add(${m.id})">+</button></div></div>`).join("")||"<p>Ничего не найдено</p>";
+  $("cnt").textContent=Object.values(cart).reduce((a,b)=>a+b,0);
+}
+function add(id){cart[id]=(cart[id]||0)+1;save();render();toast("Добавлено в корзину")}
+function chg(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];save();render();drawCart()}
+function total(){return Object.entries(cart).reduce((s,[id,q])=>s+M.find(m=>m.id==id).price*q,0)}
+function drawCart(){
+  const e=Object.entries(cart);
+  $("items").innerHTML=e.length?e.map(([id,q])=>{const m=M.find(x=>x.id==id);return `<div class="item"><span>${m.name}<br><small>${money(m.price)}</small></span><div class="qty"><button onclick="chg(${id},-1)">−</button>${q}<button onclick="chg(${id},1)">+</button></div></div>`}).join(""):"<p style='padding:20px 0;color:#888'>Корзина пуста</p>";
+  $("sum").textContent=money(total());$("form").style.display=e.length?"block":"none";
+}
+function openCart(){drawCart();$("sheet").classList.add("show")}
+function closeCart(){$("sheet").classList.remove("show")}
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+async function order(){
+  const name=$("name").value.trim(),phone=$("phone").value.trim(),addr=$("addr").value.trim();
+  if(!name||!phone||!addr)return toast("Заполните имя, телефон и адрес");
+  const id=Date.now().toString(36).toUpperCase().slice(-6);
+  const lines=Object.entries(cart).map(([i,q])=>{const m=M.find(x=>x.id==i);return `• ${esc(m.name)} × ${q} = ${money(m.price*q)}`}).join("\n");
+  const note=$("note").value.trim();
+  const text=`🆕 <b>Новый заказ #${id}</b>\n\n${lines}\n\n💰 <b>Итого: ${money(total())}</b>\n\n👤 ${esc(name)}\n📞 ${esc(phone)}\n📍 ${esc(addr)}`+(note?`\n💬 ${esc(note)}`:"")+`\n\n⏳ Статус: ожидает`;
+  const btn=$("send");btn.disabled=true;btn.textContent="Отправка...";
+  try{
+    const r=await fetch(`https://api.telegram.org/bot${C.BOT_TOKEN}/sendMessage`,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({chat_id:C.ADMIN_CHAT_ID,text,parse_mode:"HTML",reply_markup:{inline_keyboard:[[{text:"✅ Принять",callback_data:"ok:"+id},{text:"❌ Отклонить",callback_data:"no:"+id}]]}})});
+    const j=await r.json();if(!j.ok)throw new Error(j.description);
+    cart={};save();closeCart();render();toast("✅ Заказ #"+id+" отправлен!");
+  }catch(e){toast("Ошибка: "+e.message)}
+  btn.disabled=false;btn.textContent="Оформить заказ";
+}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — заказы</title>
+<style>body{font-family:system-ui;background:#fff3ea;padding:20px;max-width:480px;margin:auto}
+.s{padding:12px;border-radius:12px;background:#fff;margin-top:12px}.ok{color:#0a7d2c}</style></head>
+<body><h2>🔔 Приём заказов</h2>
+<p>Держите эту страницу открытой на телефоне/планшете кафе. Кнопки «Принять / Отклонить» в Telegram работают, пока она открыта.</p>
+<div class="s" id="st">Подключение...</div><div class="s" id="log">Журнал:<br></div>
+<script src="config.js"></script>
+<script>
+const C=CONFIG,API="https://api.telegram.org/bot"+C.BOT_TOKEN+"/";let off=0;
+const call=(m,b)=>fetch(API+m,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b)}).then(r=>r.json());
+const wait=ms=>new Promise(s=>setTimeout(s,ms));
+async function loop(){
+  await call("deleteWebhook",{});
+  document.getElementById("st").innerHTML="<span class='ok'>● Онлайн, слушаю заказы</span>";
+  while(true){
+    try{
+      const r=await call("getUpdates",{offset:off,timeout:25,allowed_updates:["callback_query"]});
+      if(!r.ok){document.getElementById("st").textContent="Ошибка: "+r.description;await wait(5000);continue}
+      for(const u of r.result){off=u.update_id+1;const q=u.callback_query;if(!q)continue;
+        const [act,id]=q.data.split(":"),acc=act==="ok";
+        const base=(q.message.text||"").replace(/\n*(⏳|✅|❌) Статус[\s\S]*$/,"");
+        await call("editMessageText",{chat_id:q.message.chat.id,message_id:q.message.message_id,text:base+"\n\n"+(acc?"✅ Статус: ПРИНЯТ":"❌ Статус: ОТКЛОНЁН")});
+        await call("answerCallbackQuery",{callback_query_id:q.id,text:acc?"Заказ принят":"Заказ отклонён"});
+        document.getElementById("log").innerHTML+="#"+id+" — "+(acc?"принят":"отклонён")+"<br>";
+      }
+    }catch(e){await wait(3000)}
+  }
+}
+loop();
+</script></body></html>
