@@ -272,6 +272,14 @@
       "desc": "20 сомон",
       "price": 20,
       "img": "images/1794754045771.jpg"
+    },
+    {
+      "id": 31,
+      "cat": "sides",
+      "name": "Zz донер",
+      "desc": "Болаззат",
+      "price": 25,
+      "img": "images/1794754180915.jpg"
     }
   ]
 }
