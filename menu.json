@@ -152,6 +152,14 @@
       "desc": "Прапустит",
       "price": 83,
       "img": "images/1794749467229.jpg"
+    },
+    {
+      "id": 16,
+      "cat": "tenders",
+      "name": "Zz 🍕 пица",
+      "desc": "Прапустит",
+      "price": 70,
+      "img": "images/1794750674430.jpg"
     }
   ]
 }
