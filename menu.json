@@ -85,14 +85,6 @@
       "img": "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=500&q=70"
     },
     {
-      "id": 7,
-      "cat": "sides",
-      "name": "Картофель фри",
-      "desc": "Большая порция",
-      "price": 40,
-      "img": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=500&q=70"
-    },
-    {
       "id": 8,
       "cat": "sides",
       "name": "Коул слоу",
