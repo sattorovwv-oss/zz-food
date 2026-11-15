@@ -32,14 +32,5 @@
       "img": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=500&q=70"
     }
   ],
-  "items": [
-    {
-      "id": 3,
-      "cat": "drinks",
-      "name": "Колкакола",
-      "desc": "Ҳичи",
-      "price": 20,
-      "img": "images/1794731422433.jpg"
-    }
-  ]
+  "items": []
 }
