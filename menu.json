@@ -34,14 +34,6 @@
   ],
   "items": [
     {
-      "id": 4,
-      "cat": "buckets",
-      "name": "Семейный баскет 12 шт",
-      "desc": "4 соуса + 4 фри",
-      "price": 349,
-      "img": "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=500&q=70"
-    },
-    {
       "id": 5,
       "cat": "burgers",
       "name": "Классик бургер",
