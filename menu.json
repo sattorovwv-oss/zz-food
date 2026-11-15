@@ -34,14 +34,6 @@
   ],
   "items": [
     {
-      "id": 9,
-      "cat": "drinks",
-      "name": "Кола 0.5Л",
-      "desc": "Холодная",
-      "price": 25,
-      "img": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=500&q=70"
-    },
-    {
       "id": 10,
       "cat": "burgers",
       "name": "Бургер",
