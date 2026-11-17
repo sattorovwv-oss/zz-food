@@ -320,6 +320,14 @@
       "desc": "Оби тоза",
       "price": 8,
       "img": "images/1794902456618.jpg"
+    },
+    {
+      "id": 38,
+      "cat": "drinks",
+      "name": "Rc Refresher cola zard",
+      "desc": "Нушоки газнок🍾",
+      "price": 10,
+      "img": "images/1794902602563.jpg"
     }
   ]
 }
