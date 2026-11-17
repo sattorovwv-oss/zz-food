@@ -336,6 +336,14 @@
       "desc": "Чои зебо",
       "price": 5,
       "img": "images/1794903040606.jpg"
+    },
+    {
+      "id": 40,
+      "cat": "drinks",
+      "name": "Gorilla 🦍",
+      "desc": "🍾🍾🍾",
+      "price": 13,
+      "img": "images/1794921604976.jpg"
     }
   ]
 }
